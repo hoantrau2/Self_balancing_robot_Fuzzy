@@ -1,0 +1,52 @@
+/*
+ * motor.h
+ *
+ *  Created on: Nov 24, 2023
+ *      Author: Hien Nguyen
+ */
+
+#ifndef INC_MOTOR_H_
+#define INC_MOTOR_H_
+
+
+
+#endif /* INC_MOTOR_H_ */
+
+
+#include <stdint.h>
+#include "main.h"
+#include <stm32f1xx_hal_tim.h>
+#include "SBR1_fis.h"
+
+#define		MAX_CNT			1899
+#define 	MIN_CNT			100
+#define 	VAL_MAX			1
+#define		EPSILON			0
+#define 	TIME_EXAMPLE	10 		// 10ms
+#define 	ANGLE_THRESHOLD	60
+#define 	K_THETA 			7.3
+#define 	K_THETA_DOT			110
+#define 	OFFSET			-2.0
+
+
+
+typedef struct {
+	float f_inp_fuzzy[2];
+	float f_out_fuzzy;
+	float f_K_theta;
+	float f_K_theta_dot;
+} Fuzzy_t;
+
+
+TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim4;
+
+
+void Init_tim_pwm();
+void Forward (float duty);
+void Reverse (float duty);
+static void Stop_motor();
+static void Set_duty(float duty, TIM_HandleTypeDef *htim, int channel); // duty 0-1
+static void Limit_val(float *value);
+void Controller (double new_angle, double vec_angle, Fuzzy_t *fuzzy);
+

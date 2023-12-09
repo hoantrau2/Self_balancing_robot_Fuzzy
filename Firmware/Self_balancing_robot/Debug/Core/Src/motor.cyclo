@@ -1,0 +1,7 @@
+../Core/Src/motor.c:10:13:Limit_val	3
+../Core/Src/motor.c:15:13:Set_duty	3
+../Core/Src/motor.c:24:6:Init_tim_pwm	1
+../Core/Src/motor.c:31:13:Stop_motor	1
+../Core/Src/motor.c:38:6:Forward	1
+../Core/Src/motor.c:45:6:Reverse	1
+../Core/Src/motor.c:52:6:Controller	5
