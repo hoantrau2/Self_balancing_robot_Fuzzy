@@ -4,4 +4,4 @@
 ../Core/Src/motor.c:31:13:Stop_motor	1
 ../Core/Src/motor.c:38:6:Forward	1
 ../Core/Src/motor.c:45:6:Reverse	1
-../Core/Src/motor.c:52:6:Controller	5
+../Core/Src/motor.c:52:6:Controller	6

@@ -47,11 +47,9 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
-
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
-
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
@@ -88,12 +86,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) // timer1 interrupte
 		u8_flag_10ms = 1;
 	}
 }
-double variable_view_theta;
-double variable_view_theta_dot;
-double angle_Roll;
-double pre_angle_Roll;
-double vel_angle_Roll;
-double pre_vel_angle_Roll;
+float variable_view_theta;
+float variable_view_theta_dot;
+float variavle_view_output;
 /* USER CODE END 0 */
 
 /**
@@ -145,25 +140,6 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  //These parameters in motor.h and SBR1_fis.c need to be tuned belong to your robot
-//	  if (u8_flag_10ms)
-//	  {
-//		  u8_flag_10ms = 0;
-//		  MPU6050_Read_All(&hi2c1,&t_MPU6050);
-//		  angle_Roll = t_MPU6050.KalmanAngleY*0.9 + pre_angle_Roll;
-//		  pre_angle_Roll =angle_Roll;
-//		  vel_angle_Roll = t_MPU6050.Gy;
-//		  pre_vel_angle_Roll = vel_angle_Roll;
-//		  Controller (angle_Roll, vel_angle_Roll* RAD_TO_DEG, &t_fuzzy);
-//		  // variable_view is used to see value in debug process
-//		  variable_view_theta = angle_Roll;
-//		  variable_view_theta_dot = vel_angle_Roll;
-//		  //angle roll after Kalman filter
-//		  int theta = t_MPU6050.KalmanAngleY*1000.0;
-//		  int theta_dot = t_MPU6050.Gy* RAD_TO_DEG*1000.0;
-//		  int uk = t_fuzzy.f_out_fuzzy;
-//		  sprintf(data,FRAME,SIGN(theta),ABS(theta),SIGN(theta_dot),ABS(theta_dot),SIGN(uk),ABS(uk));
-//		  HAL_UART_Transmit(&huart1,(uint8_t*)data, strlen(data), 5);
-//	  }
 	  if (u8_flag_10ms)
 	  {
 		  u8_flag_10ms = 0;
@@ -173,11 +149,11 @@ int main(void)
 		  variable_view_theta = t_MPU6050.KalmanAngleY;
 		  variable_view_theta_dot =  t_MPU6050.Gy;
 		  Controller (t_MPU6050.KalmanAngleY, t_MPU6050.Gy* RAD_TO_DEG, &t_fuzzy);
+		  variavle_view_output = t_fuzzy.f_out_fuzzy;
 		  int theta = t_MPU6050.KalmanAngleY*1000.0;
 		  int theta_dot = t_MPU6050.Gy* RAD_TO_DEG*1000.0;
 		  int uk = t_fuzzy.f_out_fuzzy;
 		  sprintf(data,FRAME,SIGN(theta),ABS(theta),SIGN(theta_dot),ABS(theta_dot),SIGN(uk),ABS(uk));
-		  HAL_UART_Transmit(&huart1,(uint8_t*)data, strlen(data), 5);
 	  }
 
   }
@@ -481,6 +457,11 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	  HAL_UART_Transmit_IT(&huart1,(uint8_t*)data, strlen(data));
+}
 
 /* USER CODE END 4 */
 

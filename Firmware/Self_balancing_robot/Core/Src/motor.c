@@ -59,19 +59,23 @@ void Controller (double new_angle, double vec_angle, Fuzzy_t *fuzzy){
 	Limit_val(&fuzzy->f_inp_fuzzy[0]);
 	fuzzy->f_inp_fuzzy[1] = vec_angle/fuzzy->f_K_theta_dot;  //normalize value
 	Limit_val(&fuzzy->f_inp_fuzzy[1]);
-	SBR1_run(&fuzzy->f_inp_fuzzy, &fuzzy->f_out_fuzzy);
+	SBR1_run(fuzzy->f_inp_fuzzy, &fuzzy->f_out_fuzzy);
 	Limit_val(&fuzzy->f_out_fuzzy);
 
-	if (fuzzy->f_out_fuzzy > 0){
+	if (fuzzy->f_out_fuzzy > 0.4){
 		Reverse (fuzzy->f_out_fuzzy);
 		// Reverse of forward belongs to you hardware structure
 		return;
-	} else {
+	    }
+	   else if  (fuzzy->f_out_fuzzy < -0.4)
+	    {
 		Forward ((-1)*fuzzy->f_out_fuzzy);
 		return;
+	    }
+	else {
+		Stop_motor();
+	     }
 	}
-
-}
 
 #ifdef PID // program PID if you want to control robot by PID controller
 void PID_controller(double new_angle, PID_t *pid){
