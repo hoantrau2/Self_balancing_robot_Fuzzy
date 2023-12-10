@@ -88,7 +88,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) // timer1 interrupte
 		u8_flag_10ms = 1;
 	}
 }
-int variable_view;
+double variable_view_theta;
+double variable_view_theta_dot;
+double angle_Roll;
+double pre_angle_Roll;
+double vel_angle_Roll;
+double pre_vel_angle_Roll;
 /* USER CODE END 0 */
 
 /**
@@ -139,20 +144,42 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  //These parameters in motor.h and SBR1_fis.c need to be tuned belong to your robot
+//	  if (u8_flag_10ms)
+//	  {
+//		  u8_flag_10ms = 0;
+//		  MPU6050_Read_All(&hi2c1,&t_MPU6050);
+//		  angle_Roll = t_MPU6050.KalmanAngleY*0.9 + pre_angle_Roll;
+//		  pre_angle_Roll =angle_Roll;
+//		  vel_angle_Roll = t_MPU6050.Gy;
+//		  pre_vel_angle_Roll = vel_angle_Roll;
+//		  Controller (angle_Roll, vel_angle_Roll* RAD_TO_DEG, &t_fuzzy);
+//		  // variable_view is used to see value in debug process
+//		  variable_view_theta = angle_Roll;
+//		  variable_view_theta_dot = vel_angle_Roll;
+//		  //angle roll after Kalman filter
+//		  int theta = t_MPU6050.KalmanAngleY*1000.0;
+//		  int theta_dot = t_MPU6050.Gy* RAD_TO_DEG*1000.0;
+//		  int uk = t_fuzzy.f_out_fuzzy;
+//		  sprintf(data,FRAME,SIGN(theta),ABS(theta),SIGN(theta_dot),ABS(theta_dot),SIGN(uk),ABS(uk));
+//		  HAL_UART_Transmit(&huart1,(uint8_t*)data, strlen(data), 5);
+//	  }
 	  if (u8_flag_10ms)
 	  {
 		  u8_flag_10ms = 0;
+		  //parameters after Kalman filter
 		  MPU6050_Read_All(&hi2c1,&t_MPU6050);
-		  Controller (t_MPU6050.KalmanAngleY, t_MPU6050.Gy* RAD_TO_DEG, &t_fuzzy);
-		  //angle roll after Kalman filter
-		  int theta = t_MPU6050.KalmanAngleY*1000.0;
 		  // variable_view is used to see value in debug process
-		  variable_view = theta;
+		  variable_view_theta = t_MPU6050.KalmanAngleY;
+		  variable_view_theta_dot =  t_MPU6050.Gy;
+		  Controller (t_MPU6050.KalmanAngleY, t_MPU6050.Gy* RAD_TO_DEG, &t_fuzzy);
+		  int theta = t_MPU6050.KalmanAngleY*1000.0;
 		  int theta_dot = t_MPU6050.Gy* RAD_TO_DEG*1000.0;
 		  int uk = t_fuzzy.f_out_fuzzy;
 		  sprintf(data,FRAME,SIGN(theta),ABS(theta),SIGN(theta_dot),ABS(theta_dot),SIGN(uk),ABS(uk));
 		  HAL_UART_Transmit(&huart1,(uint8_t*)data, strlen(data), 5);
 	  }
+
   }
   /* USER CODE END 3 */
 }

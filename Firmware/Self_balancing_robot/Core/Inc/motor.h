@@ -25,9 +25,9 @@
 #define		EPSILON			0
 #define 	TIME_EXAMPLE	10 		// timer1 interrupted 10ms to read data mpu6050 and controller robot
 #define 	ANGLE_THRESHOLD	60
-#define 	K_THETA 			7.3
-#define 	K_THETA_DOT			110
-#define 	OFFSET			-2.0
+#define 	K_THETA 			15
+#define 	K_THETA_DOT			20
+#define 	OFFSET			-2.735 //angler MPU return when robot balance
 // MIN_CNT; K_THETA; K_THETA_DOT; OFFSET:	 These parameters need to be tuned belong to your robot
 
 

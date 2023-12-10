@@ -53,6 +53,16 @@ static const qFIS_Rules_t rules[] = {
 float rStrength[ 25 ] = { 0.0f };
 
 /* Parameters of the membership functions */
+//static const float theta_NB_p[] = { -2.0000f, -1.50000f, -0.6000f, -0.4000f };
+//static const float theta_NS_p[] = { -0.6000f, -0.4000f, -0.2500f, 0.0000f };
+//static const float theta_ZE_p[] = { -0.2500f, 0.0000f, 0.25000f };
+//static const float theta_PS_p[] = { 0.0000f, 0.25000f, 0.4000f, 0.600f };
+//static const float theta_PB_p[] = { 0.4000f, 0.600f, 1.50000f, 2.0000f };
+//static const float thetadot_NB_p[] = { -5.0000f, -1.0000f, -0.600f };
+//static const float thetadot_NS_p[] = { -1.0000f, -0.600f, 0.0000f };
+//static const float thetadot_ZE_p[] = { -0.600f, 0.0000f, 0.600f };
+//static const float thetadot_PS_p[] = { 0.0000f, 0.600f, 1.0000f };
+//static const float thetadot_PB_p[] = { 0.600f, 1.0000f, 5.0000f };
 static const float theta_NB_p[] = { -10.0000f, -9.0000f, -0.3000f, -0.22000f };
 static const float theta_NS_p[] = { -0.3000f, -0.22000f, -0.1800f, 0.0000f };
 static const float theta_ZE_p[] = { -0.1800f, 0.0000f, 0.13000f };
@@ -63,13 +73,13 @@ static const float thetadot_NS_p[] = { -1.0000f, -0.5500f, 0.0000f };
 static const float thetadot_ZE_p[] = { -0.5500f, 0.0000f, 0.5500f };
 static const float thetadot_PS_p[] = { 0.0000f, 0.5500f, 1.0000f };
 static const float thetadot_PB_p[] = { 0.5500f, 1.0000f, 5.0000f };
-static const float u_NB_p[] = { -1.0000f };
-static const float u_NM_p[] = { -0.4500f };//-0.6670
-static const float u_NS_p[] = { -0.3333f };
+static const float u_NB_p[] = { -0.619f };
+static const float u_NM_p[] = { -0.400f };//-0.6670
+static const float u_NS_p[] = { -0.2500f };
 static const float u_ZE_p[] = { 0.0000f };
-static const float u_PS_p[] = { 0.3333f };
-static const float u_PM_p[] = { 0.4500f };//0.6670
-static const float u_PB_p[] = { 1.0000f };
+static const float u_PS_p[] = { 0.2500f };
+static const float u_PM_p[] = { 0.400f };//0.6670
+static const float u_PB_p[] = { 0.61900f };
 
 
 void SBR1_init( void ){
