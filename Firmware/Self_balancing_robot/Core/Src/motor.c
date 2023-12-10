@@ -55,15 +55,16 @@ void Controller (double new_angle, double vec_angle, Fuzzy_t *fuzzy){
 			return;
 		}
 
-	fuzzy->f_inp_fuzzy[0] = (new_angle- OFFSET)/fuzzy->f_K_theta;
+	fuzzy->f_inp_fuzzy[0] = (new_angle- OFFSET)/fuzzy->f_K_theta; //normalize value
 	Limit_val(&fuzzy->f_inp_fuzzy[0]);
-	fuzzy->f_inp_fuzzy[1] = vec_angle/fuzzy->f_K_theta_dot;
+	fuzzy->f_inp_fuzzy[1] = vec_angle/fuzzy->f_K_theta_dot;  //normalize value
 	Limit_val(&fuzzy->f_inp_fuzzy[1]);
 	SBR1_run(&fuzzy->f_inp_fuzzy, &fuzzy->f_out_fuzzy);
 	Limit_val(&fuzzy->f_out_fuzzy);
 
 	if (fuzzy->f_out_fuzzy > 0){
 		Reverse (fuzzy->f_out_fuzzy);
+		// Reverse of forward belongs to you hardware structure
 		return;
 	} else {
 		Forward ((-1)*fuzzy->f_out_fuzzy);
@@ -72,14 +73,13 @@ void Controller (double new_angle, double vec_angle, Fuzzy_t *fuzzy){
 
 }
 
-#ifdef PID
+#ifdef PID // program PID if you want to control robot by PID controller
 void PID_controller(double new_angle, PID_t *pid){
 	pid->f_ek 		= new_angle - pid->f_setpoint;
 	pid->f_P_part	= pid->f_Kp*(pid->f_ek-pid->f_ek_1);
 	pid->f_I_part	= 0.5*pid->f_Ki*TIME_EXAMPLE*(pid->f_ek+pid->f_ek_1);
 	pid->f_D_part	= pid->f_Kd*(pid->f_ek-2*pid->f_ek_1+pid->f_ek_2)/TIME_EXAMPLE;
 	pid->f_uk		= pid->f_uk1 +pid->f_P_part+pid->f_I_part+pid->f_D_part;
-//	pid->f_uk		= pid->f_P_part+pid->f_I_part+pid->f_D_part;
 	if(pid->f_uk> U_MAX)  pid->f_uk = U_MAX;
 	if(pid->f_uk<-U_MAX) pid->f_uk = -U_MAX;
 	pid->f_ek_2		= pid->f_ek_1;

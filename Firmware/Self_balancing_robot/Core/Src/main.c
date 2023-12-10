@@ -81,7 +81,7 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) // timer1 interrupted 10 ms
 {
 	if(htim->Instance==TIM1)
 	{
@@ -128,10 +128,7 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim1);
   Init_tim_pwm();
 
-  while (MPU6050_Init(&hi2c1) == 1);
-
-
-
+  while (MPU6050_Init(&hi2c1) == 1); // if mpu6050 identified, mcu will escape while loop
 
   /* USER CODE END 2 */
 
@@ -147,7 +144,9 @@ int main(void)
 		  u8_flag_10ms = 0;
 		  MPU6050_Read_All(&hi2c1,&t_MPU6050);
 		  Controller (t_MPU6050.KalmanAngleY, t_MPU6050.Gy* RAD_TO_DEG, &t_fuzzy);
+		  //angle roll after Kalman filter
 		  int theta = t_MPU6050.KalmanAngleY*1000.0;
+		  // variable_view is used to see value in debug process
 		  variable_view = theta;
 		  int theta_dot = t_MPU6050.Gy* RAD_TO_DEG*1000.0;
 		  int uk = t_fuzzy.f_out_fuzzy;
@@ -184,7 +183,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV2;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
