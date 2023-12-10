@@ -51,6 +51,7 @@ I2C_HandleTypeDef hi2c1;
 TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
+
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
@@ -87,7 +88,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		u8_flag_10ms = 1;
 	}
 }
-
+int variable_view;
 /* USER CODE END 0 */
 
 /**
@@ -141,13 +142,13 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
 	  if (u8_flag_10ms)
 	  {
 		  u8_flag_10ms = 0;
 		  MPU6050_Read_All(&hi2c1,&t_MPU6050);
 		  Controller (t_MPU6050.KalmanAngleY, t_MPU6050.Gy* RAD_TO_DEG, &t_fuzzy);
 		  int theta = t_MPU6050.KalmanAngleY*1000.0;
+		  variable_view = theta;
 		  int theta_dot = t_MPU6050.Gy* RAD_TO_DEG*1000.0;
 		  int uk = t_fuzzy.f_out_fuzzy;
 		  sprintf(data,FRAME,SIGN(theta),ABS(theta),SIGN(theta_dot),ABS(theta_dot),SIGN(uk),ABS(uk));
@@ -177,12 +178,13 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+
   /** Initializes the CPU, AHB and APB buses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV2;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
@@ -419,6 +421,8 @@ static void MX_USART1_UART_Init(void)
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
+/* USER CODE BEGIN MX_GPIO_Init_1 */
+/* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
@@ -446,6 +450,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+/* USER CODE BEGIN MX_GPIO_Init_2 */
+/* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
@@ -483,5 +489,3 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
