@@ -62,6 +62,7 @@ UART_HandleTypeDef huart1;
 
 	uint8_t		u8_flag_10ms = 0;
 	char data[100];
+	float pre_theta = 0;
 
 /* USER CODE END PV */
 
@@ -86,6 +87,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) // timer1 interrupte
 		u8_flag_10ms = 1;
 	}
 }
+
+//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+//{
+//	  HAL_UART_Transmit_IT(&huart1,(uint8_t*)data, strlen(data));
+//}
+
 float variable_view_theta;
 float variable_view_theta_dot;
 float variavle_view_output;
@@ -127,6 +134,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim1);
   Init_tim_pwm();
+//  HAL_UART_Transmit_IT(&huart1,(uint8_t*)data, 20);
 
   while (MPU6050_Init(&hi2c1) == 1); // if mpu6050 identified, mcu will escape while loop
 
@@ -146,14 +154,17 @@ int main(void)
 		  //parameters after Kalman filter
 		  MPU6050_Read_All(&hi2c1,&t_MPU6050);
 		  // variable_view is used to see value in debug process
-		  variable_view_theta = t_MPU6050.KalmanAngleY;
-		  variable_view_theta_dot =  t_MPU6050.Gy;
+//		  variable_view_theta = t_MPU6050.KalmanAngleY;
+//		  variable_view_theta_dot =  (t_MPU6050.KalmanAngleY-pre_theta)/(TIME_EXAMPLE*0.001);
+//		  pre_theta = t_MPU6050.KalmanAngleY;
+//		  Controller (t_MPU6050.KalmanAngleY, variable_view_theta_dot, &t_fuzzy);
 		  Controller (t_MPU6050.KalmanAngleY, t_MPU6050.Gy* RAD_TO_DEG, &t_fuzzy);
 		  variavle_view_output = t_fuzzy.f_out_fuzzy;
 		  int theta = t_MPU6050.KalmanAngleY*1000.0;
 		  int theta_dot = t_MPU6050.Gy* RAD_TO_DEG*1000.0;
 		  int uk = t_fuzzy.f_out_fuzzy;
 		  sprintf(data,FRAME,SIGN(theta),ABS(theta),SIGN(theta_dot),ABS(theta_dot),SIGN(uk),ABS(uk));
+		  HAL_UART_Transmit(&huart1,(uint8_t*)data, strlen(data),9);
 	  }
 
   }
@@ -270,10 +281,9 @@ static void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
+
   /* USER CODE BEGIN TIM1_Init 2 */
-
   /* USER CODE END TIM1_Init 2 */
-
 }
 
 /**
@@ -458,10 +468,7 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-	  HAL_UART_Transmit_IT(&huart1,(uint8_t*)data, strlen(data));
-}
+
 
 /* USER CODE END 4 */
 

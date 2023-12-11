@@ -19,15 +19,15 @@
 #include "stm32f1xx_hal.h"
 #include "SBR1_fis.h"
 
-#define		MAX_CNT			1099 // AutoReload Register - MIN_CNT to receive the number amplifier of PWM (by with duty cycle)
-#define 	MIN_CNT			40 // value to eliminate engine friction
+#define		MAX_CNT		    999 // AutoReload Register - MIN_CNT to receive the number amplifier of PWM (by with duty cycle)
+#define 	MIN_CNT			140 // value to eliminate engine friction
 #define 	VAL_MAX			1   // max value of duty cycle is 1 (normalized value)
 #define		EPSILON			0
 #define 	TIME_EXAMPLE	10 		// timer1 interrupted 10ms to read data mpu6050 and controller robot
-#define 	ANGLE_THRESHOLD	60
+#define 	ANGLE_THRESHOLD	70
 #define 	K_THETA 			8.5
-#define 	K_THETA_DOT			200
-#define 	OFFSET			-2.5//angler MPU return when robot balance
+#define 	K_THETA_DOT			100
+#define 	OFFSET			-2.7//angler MPU return when robot balance
 // MIN_CNT; K_THETA; K_THETA_DOT; OFFSET:	 These parameters need to be tuned belong to your robot
 
 
