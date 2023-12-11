@@ -23,11 +23,11 @@
 #define 	MIN_CNT			140 // value to eliminate engine friction
 #define 	VAL_MAX			1   // max value of duty cycle is 1 (normalized value)
 #define		EPSILON			0
-#define 	TIME_EXAMPLE	10 		// timer1 interrupted 10ms to read data mpu6050 and controller robot
+#define 	TIME_EXAMPLE	10 // timer1 interrupted 10ms to read data mpu6050 and controller robot
 #define 	ANGLE_THRESHOLD	70
 #define 	K_THETA 			8.5
 #define 	K_THETA_DOT			100
-#define 	OFFSET			-2.7//angler MPU return when robot balance
+#define 	OFFSET			-2.7    //angler MPU return when robot balance
 // MIN_CNT; K_THETA; K_THETA_DOT; OFFSET:	 These parameters need to be tuned belong to your robot
 
 

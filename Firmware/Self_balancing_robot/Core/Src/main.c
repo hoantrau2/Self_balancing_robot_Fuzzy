@@ -93,9 +93,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) // timer1 interrupte
 //	  HAL_UART_Transmit_IT(&huart1,(uint8_t*)data, strlen(data));
 //}
 
-float variable_view_theta;
-float variable_view_theta_dot;
-float variavle_view_output;
 /* USER CODE END 0 */
 
 /**
@@ -153,13 +150,7 @@ int main(void)
 		  u8_flag_10ms = 0;
 		  //parameters after Kalman filter
 		  MPU6050_Read_All(&hi2c1,&t_MPU6050);
-		  // variable_view is used to see value in debug process
-//		  variable_view_theta = t_MPU6050.KalmanAngleY;
-//		  variable_view_theta_dot =  (t_MPU6050.KalmanAngleY-pre_theta)/(TIME_EXAMPLE*0.001);
-//		  pre_theta = t_MPU6050.KalmanAngleY;
-//		  Controller (t_MPU6050.KalmanAngleY, variable_view_theta_dot, &t_fuzzy);
 		  Controller (t_MPU6050.KalmanAngleY, t_MPU6050.Gy* RAD_TO_DEG, &t_fuzzy);
-		  variavle_view_output = t_fuzzy.f_out_fuzzy;
 		  int theta = t_MPU6050.KalmanAngleY*1000.0;
 		  int theta_dot = t_MPU6050.Gy* RAD_TO_DEG*1000.0;
 		  int uk = t_fuzzy.f_out_fuzzy;
