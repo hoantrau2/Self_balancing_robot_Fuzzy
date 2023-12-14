@@ -1998,3 +1998,22 @@ java.lang.Exception
 
 !ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-12-11 22:32:01.389
 !MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2023-12-13 10:56:11.232 -----------------------------------------------
+eclipse.buildId=Version 1.14.0
+java.version=17.0.8.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Framework arguments:  C:\Users\Admin\Downloads\Embedded_System_Project-\Firmware\.project
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\Users\Admin\Downloads\Embedded_System_Project-\Firmware\.project
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2023-12-13 10:56:30.552
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2023-12-13 10:56:30.558
+!MESSAGE Log4j2 initialized with config file E:\memory\Project in university\Self_balancing_robot (Fuzzy control algorithm)\Firmware\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2023-12-13 10:56:42.574
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2023-12-13 10:56:47.373
+!MESSAGE Indexed 'Embed_System_BTL' (27 sources, 120 headers) in 3.73 sec: 11,165 declarations; 58,990 references; 2 unresolved inclusions; 42 syntax errors; 147 unresolved names (0.21%)
